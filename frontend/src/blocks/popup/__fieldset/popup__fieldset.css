@@ -1,0 +1,12 @@
+.popup__fieldset {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  margin-bottom: 30px;
+}
+
+.popup__fieldset:nth-child(2) {
+  margin-bottom: 48px;
+}

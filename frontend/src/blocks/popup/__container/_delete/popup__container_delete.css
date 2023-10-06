@@ -1,0 +1,7 @@
+.popup__container_delete {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  row-gap: 38px;
+  min-height: unset;
+}

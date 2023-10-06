@@ -1,0 +1,18 @@
+.popup__container_image {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  background-color: unset;
+  border-radius: unset;
+  box-shadow: unset;
+  padding: unset;
+  max-width: unset;
+  min-height: unset;
+}
+
+@media screen and (max-width: 576px) {
+  .popup__container_image  {
+    padding: unset;
+  }
+}

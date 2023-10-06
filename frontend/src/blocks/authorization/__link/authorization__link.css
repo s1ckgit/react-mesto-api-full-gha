@@ -1,0 +1,14 @@
+.authorization__link {
+  color: white;
+  text-decoration: none;
+  text-align: center;
+  transition: opacity .3s;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.authorization__link:hover {
+  opacity: .7;
+}

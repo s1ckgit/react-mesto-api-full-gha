@@ -16,7 +16,8 @@ class Api {
 
     getInitialCards() {
       return fetch(`${this._baseUrl}/cards`, {
-        credentials: 'include',
+        headers: this._headers,
+
       })
         .then(res => {
           return this._checkResponse(res)
@@ -26,7 +27,7 @@ class Api {
     getUserInfo() {
       return fetch(`${this._baseUrl}/users/me`, {
         headers: this._headers,
-        credentials: 'include',
+
       })
         .then(res => {
           return this._checkResponse(res)
@@ -37,7 +38,7 @@ class Api {
       return fetch(`${this._baseUrl}/users/me`, {
         method: 'PATCH',
         headers: this._headers,
-        credentials: 'include',
+
         body: JSON.stringify({
           name: name,
           about: about
@@ -52,7 +53,7 @@ class Api {
       return fetch(`${this._baseUrl}/cards`, {
         method: 'POST',
         headers: this._headers,
-        credentials: 'include',
+
         body: JSON.stringify({
           name: name,
           link: link
@@ -67,7 +68,7 @@ class Api {
       return fetch(`${this._baseUrl}/cards/${id}`, {
         method: 'DELETE',
         headers: this._headers,
-        credentials: 'include',
+
       })
         .then(res => {
           return this._checkResponse(res)
@@ -78,7 +79,6 @@ class Api {
       return fetch(`${this._baseUrl}/cards/${id}/likes`, {
         method: like ? 'PUT' : 'DELETE',
         headers: this._headers,
-        credentials: 'include',
       })
         .then(res => {
           return this._checkResponse(res)
@@ -89,7 +89,6 @@ class Api {
       return fetch(`${this._baseUrl}/users/me/avatar`, {
         method: 'PATCH',
         headers: this._headers,
-        credentials: 'include',
         body: JSON.stringify({avatar: avatar})
       })
         .then(res => {
@@ -101,7 +100,7 @@ class Api {
       return fetch(`${this._baseUrl}/signup`, {
         method: 'POST',
         headers: this._headers,
-        credentials: 'include',
+
         body: JSON.stringify(data)
       })
 
@@ -114,7 +113,6 @@ class Api {
       return fetch(`${this._baseUrl}/signin`, {
         method: 'POST',
         headers: this._headers,
-        credentials: 'include',
         body: JSON.stringify(data)
       })
 
@@ -126,7 +124,6 @@ class Api {
     logout() {
       return fetch(`${this._baseUrl}/logout`, {
         method: 'POST',
-        credentials: 'include',
         headers: this._headers
       })
         .then((res) => {

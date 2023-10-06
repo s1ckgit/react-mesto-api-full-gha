@@ -115,34 +115,22 @@ class Api {
         })
     }
 
-    getUser(jwt) {
-      return fetch(`${this._baseUrl}/users/me`, {
-        method: 'GET',
-        headers: {
-          ...this._headers,
-          'Authorization': `Bearer ${jwt}`
-        }
+    logout() {
+      return fetch(`${this._baseUrl}/logout`, {
+        method: 'POST',
+        headers: this._headers
       })
-
-        .then(res => {
+        .then((res) => {
           return this._checkResponse(res)
         })
     }
   }
 
 const api = new Api({
-    baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-70',
+    baseUrl: 'https://api.mesto-frontend.siick.nomoredomainsrocks.ru',
     headers: {
-      authorization: 'b514bb1d-ded6-4571-bfdc-a5db1d8e949e',
       'Content-Type': 'application/json'
     }
-})
-
-export const authApi = new Api({
-  baseUrl: 'https://auth.nomoreparties.co',
-  headers: {
-    "Content-Type": "application/json"
-  }
 })
 
 export default api

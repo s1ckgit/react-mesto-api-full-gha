@@ -2,6 +2,7 @@ const { ValidationError } = require('mongoose').Error;
 const bcrypt = require('bcryptjs');
 const validator = require('validator');
 const jwt = require('jsonwebtoken');
+const { NODE_ENV, JWT_SECRET } = process.env;
 
 const User = require('../models/user');
 
@@ -79,7 +80,7 @@ module.exports.login = (req, res, next) => {
 
   User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, 'secret-key', { expiresIn: '7d' });
+      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'secret-key', { expiresIn: '7d' });
 
       res.cookie('jwt', token, {
         maxAge: 3600000 * 24 * 7,
@@ -93,6 +94,12 @@ module.exports.login = (req, res, next) => {
     })
     .catch(next);
 };
+
+module.exports.logout = (req, res, next) => {
+  res.clearCookie('jwt')
+    .status(200)
+    .send({ message: 'Вы вышли из аккаунта' })
+}
 
 module.exports.getUserInfo = (req, res, next) => {
   User.findById(req.user._id).orFail()

@@ -9,7 +9,6 @@ import { useEffect, useState } from 'react';
 import { UserContext } from '../contexts/CurrentUserContext';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
-import { authApi } from '../utils/api';
 
 export default function AuthorizedContent() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false),
@@ -23,11 +22,11 @@ export default function AuthorizedContent() {
   const [cards, setCards] = useState([])
 
   useEffect(() => {
-  Promise.all([api.getUserInfo(), api.getInitialCards(), authApi.getUser(localStorage.getItem('jwt'))])
-  .then(([userData, cardsData, jwtData]) => {
+  Promise.all([api.getUserInfo(), api.getInitialCards()])
+  .then(([userData, cardsData]) => {
     setCurrentUser(userData)
     setCards(cardsData)
-    setUserEmail(jwtData.data.email)
+    setUserEmail(userData.email)
   })
   .catch(e => {
     console.log(`Ошибка получения данных с сервера...

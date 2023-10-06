@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { authApi } from '../utils/api'
+import api from '../utils/api'
 import InfoTooltip from './InfoToolTip'
 import { useNavigate } from 'react-router-dom'
 import { useContext } from 'react'
@@ -19,7 +19,7 @@ export default function AuthorizationElement({title, btnText, register = false})
   function handleSumbit(e) {
     e.preventDefault()
     if(register) {
-      authApi.registerUser(authData)
+      api.registerUser(authData)
       .then((data) => {
         console.log(data)
         setTooltipOpened(true)
@@ -34,7 +34,7 @@ export default function AuthorizationElement({title, btnText, register = false})
         setTooltipType('fail')
       })
     } else {
-      authApi.loginUser(authData)
+      api.loginUser(authData)
         .then((data) => {
           localStorage.setItem('jwt', data.token)
           setAuth(true);

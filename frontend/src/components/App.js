@@ -15,8 +15,8 @@ function App() {
       <div className="page">
       <Routes>
         <Route path='/' element={<ProtectedRoute element={AuthorizedContent} loggedIn={authorized}/>}/>
-        <Route path='/sign-up' element={<Register authorization={setAuthorized}/>}/>
-        <Route path='/sign-in' element={<Login authorization={setAuthorized}/>} />
+        <Route path='/signup' element={<Register authorization={setAuthorized}/>}/>
+        <Route path='/signin' element={<Login authorization={setAuthorized}/>} />
         <Route path='*' element={<NoMatch />}/>
       </Routes>
       </div>

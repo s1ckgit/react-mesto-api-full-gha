@@ -83,10 +83,15 @@ module.exports.login = (req, res, next) => {
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'secret-key', { expiresIn: '7d' });
 
-      res.cookie('jwt', token, {
-        maxAge: 3600000 * 24 * 7,
-        httpOnly: true,
-      })
+      // res.cookie('jwt', token, {
+      //   maxAge: 3600000 * 24 * 7,
+      //   httpOnly: true,
+      // })
+      //   .status(200)
+      //   .send({
+      //     token,
+      //   });
+      res.set('Set-Cookie', `jwt=${token}; domain=mesto-frontend.siick.nomoredomainsrocks.ru`)
         .status(200)
         .send({
           token,

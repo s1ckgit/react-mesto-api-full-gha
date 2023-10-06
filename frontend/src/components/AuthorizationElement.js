@@ -37,6 +37,7 @@ export default function AuthorizationElement({title, btnText, register = false})
       api.loginUser(authData)
         .then((data) => {
           localStorage.setItem('jwt', data.token)
+          console.log(data)
           setAuth(true);
           navigate('/')
         })
@@ -60,7 +61,7 @@ export default function AuthorizationElement({title, btnText, register = false})
         <input onChange={handleChange} name='email' value={authData.email} className='authorization__input' placeholder='Email'/>
         <input onChange={handleChange} name='password' value={authData.password} className='authorization__input' placeholder='Пароль'/>
         <button type='submit' className='authorization__button'>{btnText}</button>
-        {register && <NavLink className='authorization__link' to='/sign-in'>Уже зарегистрированы? Войти</NavLink>}
+        {register && <NavLink className='authorization__link' to='/signin'>Уже зарегистрированы? Войти</NavLink>}
       </form>
 
       <InfoTooltip setIsOpened={setTooltipOpened} type={tooltipType} isOpened={tooltipOpened}/>

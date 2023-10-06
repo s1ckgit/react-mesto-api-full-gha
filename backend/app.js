@@ -31,6 +31,11 @@ app.use(helmet());
 app.use(requestLogger);
 
 app.use((req, res, next) => {
+  res.set('Access-Control-Allow-Credentials', 'true');
+  next();
+});
+
+app.use((req, res, next) => {
   if (req.cookies.jwt) {
     req.headers.authorization = `Bearer ${req.cookies.jwt}`;
   }

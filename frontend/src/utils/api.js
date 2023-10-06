@@ -16,7 +16,6 @@ class Api {
 
     getInitialCards() {
       return fetch(`${this._baseUrl}/cards`, {
-        headers: this._headers,
         credentials: 'include',
       })
         .then(res => {

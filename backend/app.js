@@ -24,11 +24,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.use(cors([
-  'https://mesto-frontend.siick.nomoredomainsrocks.ru',
-  'http://mesto-frontend.siick.nomoredomainsrocks.ru',
-  'localhost:3000',
-]));
+app.use(cors());
 app.use(limiter);
 app.use(helmet());
 

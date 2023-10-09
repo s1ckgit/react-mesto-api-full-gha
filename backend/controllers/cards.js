@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongoose').Types;
 const Card = require('../models/card');
 const User = require('../models/user');
 
@@ -31,7 +32,7 @@ module.exports.createCard = (req, res, next) => {
   Card.create({
     name,
     link,
-    owner: req.user._id,
+    owner: ObjectId(req.user._id),
   })
     .then((card) => res.status(SUCCES_CREATED_CODE).send(card))
     .catch(next);
@@ -39,7 +40,7 @@ module.exports.createCard = (req, res, next) => {
 
 module.exports.deleteCard = (req, res, next) => {
   Card.findByIdAndRemove(req.params.cardId).orFail()
-    .populate('owner')
+    .populate(['owner', 'likes'])
     .then((card) => {
       res.send(card);
     })
@@ -52,13 +53,13 @@ module.exports.likeCard = (req, res, next) => {
     {
       $addToSet: {
         likes: [{
-          _id: req.user._id,
+          _id: ObjectId(req.user._id),
         }],
       },
     },
     { new: true },
   ).orFail()
-    .populate('likes')
+    .populate(['owner', 'likes'])
     .then((card) => {
       res.send(card);
     })
@@ -71,13 +72,13 @@ module.exports.dislikeCard = (req, res, next) => {
     {
       $pull: {
         likes: [{
-          _id: req.user._id,
+          _id: ObjectId(req.user._id),
         }],
       },
     },
     { new: true },
   ).orFail()
-    .populate('likes')
+    .populate(['owner', 'likes'])
     .then((card) => {
       res.send(card);
     })

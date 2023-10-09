@@ -25,16 +25,26 @@ module.exports.deleteAll = (req, res) => {
     });
 };
 
-module.exports.createCard = (req, res, next) => {
+// module.exports.createCard = (req, res, next) => {
+//   const { name, link } = req.body;
+//   Card.create({
+//     name,
+//     link,
+//     owner: req.user._id,
+//   })
+//     .then((card) => res.status(SUCCES_CREATED_CODE).send(card))
+//     .catch(next);
+// };
+
+module.exports.createCard = async (req, res, next) => {
   const { name, link } = req.body;
-  Card.create({
+  let card = await Card.create({
     name,
     link,
     owner: req.user._id,
   })
-    .populate(['owner', 'likes'])
-    .then((card) => res.status(SUCCES_CREATED_CODE).send(card))
-    .catch(next);
+  card = await card.populate(['owner', 'likes']);
+  res.send(card);
 };
 
 module.exports.deleteCard = (req, res, next) => {

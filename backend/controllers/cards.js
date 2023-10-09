@@ -28,7 +28,9 @@ module.exports.deleteAll = (req, res) => {
 
 module.exports.createCard = (req, res, next) => {
   const { name, link } = req.body;
-  User.findById(req.user._id)
+  User.findOne({
+    _id: req.user._id,
+  })
     .then((user) => {
       Card.create({
         name,

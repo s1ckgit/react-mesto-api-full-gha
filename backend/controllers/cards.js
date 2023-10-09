@@ -50,9 +50,9 @@ module.exports.likeCard = (req, res, next) => {
     req.params.cardId,
     {
       $addToSet: {
-        likes: {
+        likes: [{
           _id: req.user._id,
-        },
+        }],
       },
     },
     { new: true },
@@ -69,9 +69,9 @@ module.exports.dislikeCard = (req, res, next) => {
     req.params.cardId,
     {
       $pull: {
-        likes: {
+        likes: [{
           _id: req.user._id,
-        },
+        }],
       },
     },
     { new: true },

@@ -19,7 +19,7 @@ module.exports = (err, req, res, next) => {
   } else if (err instanceof NotFoundError) {
     res.status(err.statusCode).send({ message: 'Такой страницы не существует' });
   } else {
-    res.status(SERVER_ERROR_CODE).send({ err });
+    res.status(SERVER_ERROR_CODE).send(err);
   }
   next();
 };

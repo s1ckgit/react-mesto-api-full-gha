@@ -71,11 +71,7 @@ module.exports.dislikeCard = (req, res, next) => {
     req.params.cardId,
     {
       $pull: {
-        likes: {
-          $elemMatch: {
-            _id: req.user._id,
-          },
-        },
+        likes: req.user._id,
       },
     },
     { new: true },

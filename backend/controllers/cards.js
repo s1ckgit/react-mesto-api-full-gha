@@ -51,7 +51,9 @@ module.exports.likeCard = (req, res, next) => {
     {
       $addToSet: {
         likes: {
-          _id: req.user._id,
+          $elemMatch: {
+            _id: req.user._id,
+          },
         },
       },
     },
@@ -70,7 +72,9 @@ module.exports.dislikeCard = (req, res, next) => {
     {
       $pull: {
         likes: {
-          _id: req.user._id,
+          $elemMatch: {
+            _id: req.user._id,
+          },
         },
       },
     },

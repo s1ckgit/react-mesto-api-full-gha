@@ -11,6 +11,10 @@ module.exports.getCards = (req, res, next) => {
     .catch(next);
 };
 
+module.exports.deleteAll = (req, res) => {
+  Card.deleteMany({});
+};
+
 module.exports.createCard = (req, res, next) => {
   const { name, link } = req.body;
 

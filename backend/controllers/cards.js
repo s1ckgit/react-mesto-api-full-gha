@@ -32,7 +32,6 @@ module.exports.createCard = (req, res, next) => {
     link,
     owner: req.user._id,
   })
-    .populate(['owner', 'likes'])
     .then((card) => res.status(SUCCES_CREATED_CODE).send(card))
     .catch(next);
 };

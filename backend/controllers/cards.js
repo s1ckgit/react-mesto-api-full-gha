@@ -50,11 +50,7 @@ module.exports.likeCard = (req, res, next) => {
     req.params.cardId,
     {
       $addToSet: {
-        likes: {
-          $elemMatch: {
-            _id: req.user._id,
-          },
-        },
+        likes: req.user._id,
       },
     },
     { new: true },

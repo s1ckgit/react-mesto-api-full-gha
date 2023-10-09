@@ -14,16 +14,16 @@ module.exports.getCards = (req, res, next) => {
 
 module.exports.deleteAll = (req, res) => {
   Card.deleteMany({})
-    .then(result => {
+    .then((result) => {
       res.send({
         message: `Удалено ${result.deletedCount}`,
-      })
+      });
     })
-    .catch(e => {
+    .catch((e) => {
       res.send({
         message: 'хуйня какая-то опять',
-      })
-    })
+      });
+    });
 };
 
 module.exports.createCard = (req, res, next) => {
@@ -35,6 +35,7 @@ module.exports.createCard = (req, res, next) => {
         link,
         owner: user,
       })
+        .populate(['owner', 'likes'])
         .then((card) => res.status(SUCCES_CREATED_CODE).send(card))
         .catch(next);
     })
@@ -43,6 +44,7 @@ module.exports.createCard = (req, res, next) => {
 
 module.exports.deleteCard = (req, res, next) => {
   Card.findByIdAndRemove(req.params.cardId).orFail()
+    .populate(['owner', 'likes'])
     .then((card) => {
       res.send(card);
     })
@@ -61,6 +63,7 @@ module.exports.likeCard = (req, res, next) => {
     },
     { new: true },
   ).orFail()
+    .populate(['owner', 'likes'])
     .then((card) => {
       res.send(card);
     })
@@ -79,6 +82,7 @@ module.exports.dislikeCard = (req, res, next) => {
     },
     { new: true },
   ).orFail()
+    .populate(['owner', 'likes'])
     .then((card) => {
       res.send(card);
     })

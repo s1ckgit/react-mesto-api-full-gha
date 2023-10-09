@@ -66,26 +66,20 @@ module.exports.likeCard = (req, res, next) => {
 };
 
 module.exports.dislikeCard = (req, res, next) => {
-  User.findById(req.user._id)
-    .then((user) => {
-      Card.findByIdAndUpdate(
-        req.params.cardId,
-        {
-          $pull: {
-            likes: {
-              ...user,
-              _id: req.user._id,
-            },
-          },
-        },
-        { new: true },
-      ).orFail()
-        .populate('likes')
-        .then((card) => {
-          res.send(card);
-        })
-        .catch(next);
+  Card.findByIdAndUpdate(
+    req.params.cardId,
+    {
+      $pull: {
+        likes: [{
+          _id: req.user._id,
+        }],
+      },
+    },
+    { new: true },
+  ).orFail()
+    .populate('likes')
+    .then((card) => {
+      res.send(card);
     })
     .catch(next);
-
 };

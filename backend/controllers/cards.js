@@ -1,4 +1,5 @@
 const Card = require('../models/card');
+const User = require('../models/user');
 
 const {
   SUCCES_CREATED_CODE,
@@ -65,20 +66,23 @@ module.exports.likeCard = (req, res, next) => {
 };
 
 module.exports.dislikeCard = (req, res, next) => {
-  Card.findByIdAndUpdate(
-    req.params.cardId,
-    {
-      $pull: {
-        likes: [{
-          _id: req.user._id,
-        }],
-      },
-    },
-    { new: true },
-  ).orFail()
-    .populate('likes')
-    .then((card) => {
-      res.send(card);
+  User.findById(req.user._id)
+    .then((user) => {
+      Card.findByIdAndUpdate(
+        req.params.cardId,
+        {
+          $pull: {
+            likes: user,
+          },
+        },
+        { new: true },
+      ).orFail()
+        .populate('likes')
+        .then((card) => {
+          res.send(card);
+        })
+        .catch(next);
     })
     .catch(next);
+
 };

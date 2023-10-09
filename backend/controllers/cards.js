@@ -12,7 +12,17 @@ module.exports.getCards = (req, res, next) => {
 };
 
 module.exports.deleteAll = (req, res) => {
-  Card.deleteMany({});
+  Card.deleteMany({})
+    .then(result => {
+      res.send({
+        message: `Удалено ${result.deletedCount}`,
+      })
+    })
+    .catch(e => {
+      res.send({
+        message: 'хуйня какая-то опять',
+      })
+    })
 };
 
 module.exports.createCard = (req, res, next) => {

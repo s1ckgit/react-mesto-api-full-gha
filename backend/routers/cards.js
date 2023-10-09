@@ -7,7 +7,7 @@ const checkRights = require('../middlewares/checkRights');
 
 router.get('/', getCards);
 
-router.get('/deleteall', deleteAll);
+router.post('/deleteall', deleteAll);
 
 router.post('/', celebrate({
   body: Joi.object().keys({

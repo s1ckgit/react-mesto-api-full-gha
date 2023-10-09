@@ -33,7 +33,7 @@ module.exports.createCard = (req, res, next) => {
       Card.create({
         name,
         link,
-        owner: user,
+        owner: user._id,
       })
         .populate(['owner', 'likes'])
         .then((card) => res.status(SUCCES_CREATED_CODE).send(card))

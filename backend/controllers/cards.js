@@ -1,4 +1,5 @@
 const Card = require('../models/card');
+const User = require('../models/user');
 
 const {
   SUCCES_CREATED_CODE,
@@ -27,12 +28,16 @@ module.exports.deleteAll = (req, res) => {
 
 module.exports.createCard = (req, res, next) => {
   const { name, link } = req.body;
-
-  Card.create({
-    name,
-    link,
-  })
-    .then((card) => res.status(SUCCES_CREATED_CODE).send(card))
+  User.findById(req.user._id)
+    .then((user) => {
+      Card.create({
+        name,
+        link,
+        owner: user,
+      })
+        .then((card) => res.status(SUCCES_CREATED_CODE).send(card))
+        .catch(next);
+    })
     .catch(next);
 };
 

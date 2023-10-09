@@ -1,5 +1,4 @@
 const Card = require('../models/card');
-const User = require('../models/user');
 
 const {
   SUCCES_CREATED_CODE,
@@ -28,19 +27,13 @@ module.exports.deleteAll = (req, res) => {
 
 module.exports.createCard = (req, res, next) => {
   const { name, link } = req.body;
-  User.findOne({
-    _id: req.user._id,
+  Card.create({
+    name,
+    link,
+    owner: req.user._id,
   })
-    .then((user) => {
-      Card.create({
-        name,
-        link,
-        owner: user._id,
-      })
-        .populate(['owner', 'likes'])
-        .then((card) => res.status(SUCCES_CREATED_CODE).send(card))
-        .catch(next);
-    })
+    .populate(['owner', 'likes'])
+    .then((card) => res.status(SUCCES_CREATED_CODE).send(card))
     .catch(next);
 };
 

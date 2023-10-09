@@ -24,26 +24,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.use(cors());
+app.use(cors([
+  'mesto-frontend.siick.nomoredomainsrocks.ru',
+  'api.mesto-frontend.siick.nomoredomainsrocks.ru',
+  'localhost:3000',
+]));
 app.use(limiter);
 app.use(helmet());
 
 app.use(requestLogger);
 
-app.use((req, res, next) => {
-  res.set('Access-Control-Allow-Credentials', 'true');
-  next();
-});
-
-app.use((req, res, next) => {
-  if (req.cookies.jwt) {
-    req.headers.authorization = `Bearer ${req.cookies.jwt}`;
-  }
-  next();
-});
 app.use('/', router);
 
 app.use(errorLogger);
+
 app.use(errors());
 app.use(errorHandler);
 

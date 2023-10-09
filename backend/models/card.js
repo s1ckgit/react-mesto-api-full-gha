@@ -16,10 +16,10 @@ const cardSchema = mongoose.Schema({
     required: true,
   },
   owner: {
-    type: ownerSchema,
+    ownerSchema,
   },
   likes: [{
-    type: ownerSchema,
+    ownerSchema,
     default: [],
   }],
   link: {

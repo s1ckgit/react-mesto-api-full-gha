@@ -1,13 +1,11 @@
 const { celebrate, Joi } = require('celebrate');
 const router = require('express').Router();
 const {
-  getCards, createCard, likeCard, dislikeCard, deleteCard, deleteAll,
+  getCards, createCard, likeCard, dislikeCard, deleteCard,
 } = require('../controllers/cards');
 const checkRights = require('../middlewares/checkRights');
 
 router.get('/', getCards);
-
-router.post('/deleteall', deleteAll);
 
 router.post('/', celebrate({
   body: Joi.object().keys({

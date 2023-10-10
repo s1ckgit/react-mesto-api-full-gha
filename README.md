@@ -6,7 +6,7 @@
 Адрес репозитория: https://github.com/s1ckgit/react-mesto-api-full-gha
 ## Ссылки на проект
 
-IP-адрес 158.160.79.5
+IP 158.160.79.5
 
 Frontend https://mesto-frontend.siick.nomoredomainsrocks.ru
 

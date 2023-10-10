@@ -21,7 +21,6 @@ export default function AuthorizationElement({title, btnText, register = false})
     if(register) {
       api.registerUser(authData)
       .then((data) => {
-        console.log(data)
         setTooltipOpened(true)
         setTooltipType('succes');
         setAuthData({

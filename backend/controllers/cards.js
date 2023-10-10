@@ -11,40 +11,19 @@ module.exports.getCards = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.deleteAll = (req, res) => {
-  Card.deleteMany({})
-    .then((result) => {
-      res.send({
-        message: `Удалено ${result.deletedCount}`,
-      });
-    })
-    .catch((e) => {
-      res.send({
-        message: 'хуйня какая-то опять',
-      });
-    });
-};
-
-// module.exports.createCard = (req, res, next) => {
-//   const { name, link } = req.body;
-//   Card.create({
-//     name,
-//     link,
-//     owner: req.user._id,
-//   })
-//     .then((card) => res.status(SUCCES_CREATED_CODE).send(card))
-//     .catch(next);
-// };
-
 module.exports.createCard = async (req, res, next) => {
   const { name, link } = req.body;
-  let card = await Card.create({
-    name,
-    link,
-    owner: req.user._id,
-  })
-  card = await card.populate(['owner', 'likes']);
-  res.send(card);
+  try {
+    let card = await Card.create({
+      name,
+      link,
+      owner: req.user._id,
+    });
+    card = await card.populate(['owner', 'likes']);
+    res.status(SUCCES_CREATED_CODE).send(card);
+  } catch (e) {
+    next(e);
+  }
 };
 
 module.exports.deleteCard = (req, res, next) => {

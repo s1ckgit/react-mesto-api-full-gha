@@ -58,8 +58,8 @@ export default function AuthorizationElement({title, btnText, register = false})
       <h1 className="authorization__title">{title}</h1>
 
       <form onSubmit={handleSumbit} className="authorization__form">
-        <input onChange={handleChange} name='email' value={authData.email} className='authorization__input' placeholder='Email'/>
-        <input onChange={handleChange} name='password' value={authData.password} className='authorization__input' placeholder='Пароль'/>
+        <input onChange={handleChange} type='email' name='email' value={authData.email} className='authorization__input' placeholder='Email'/>
+        <input onChange={handleChange} type='password' name='password' value={authData.password} className='authorization__input' placeholder='Пароль'/>
         <button type='submit' className='authorization__button'>{btnText}</button>
         {register && <NavLink className='authorization__link' to='/signin'>Уже зарегистрированы? Войти</NavLink>}
       </form>

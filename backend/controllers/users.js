@@ -1,6 +1,4 @@
-const { ValidationError } = require('mongoose').Error;
 const bcrypt = require('bcryptjs');
-const validator = require('validator');
 const jwt = require('jsonwebtoken');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
@@ -16,28 +14,24 @@ module.exports.createUser = (req, res, next) => {
     name, about, avatar, email, password,
   } = req.body;
 
-  if (validator.isEmail(email)) {
-    bcrypt.hash(password, 10)
-      .then((hash) => {
-        User.create({
+  bcrypt.hash(password, 10)
+    .then((hash) => {
+      User.create({
+        name,
+        about,
+        avatar,
+        email,
+        password: hash,
+      })
+        .then(() => res.status(SUCCES_CREATED_CODE).send({
           name,
           about,
           avatar,
           email,
-          password: hash,
-        })
-          .then(() => res.status(SUCCES_CREATED_CODE).send({
-            name,
-            about,
-            avatar,
-            email,
-          }))
-          .catch(next);
-      })
-      .catch(next);
-  } else {
-    next(new ValidationError());
-  }
+        }))
+        .catch(next);
+    })
+    .catch(next);
 };
 
 module.exports.getUser = (req, res, next) => {
@@ -87,10 +81,7 @@ module.exports.login = (req, res, next) => {
         maxAge: 3600000 * 24 * 7,
         httpOnly: true,
       })
-        .status(200)
-        .send({
-          token,
-        });
+        .end();
     })
     .catch(next);
 };

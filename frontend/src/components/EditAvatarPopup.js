@@ -1,19 +1,19 @@
-import { useEffect, useRef } from 'react'
-import PopupWithForm from './PopupWithForm'
+import { useEffect, useRef } from 'react';
+import PopupWithForm from './PopupWithForm';
 
-function EditAvatarPopup( {isOpen, onClose, onUpdateAvatar} ) {
-  const avatarInput = useRef()
+function EditAvatarPopup( { isOpen, onClose, onUpdateAvatar } ) {
+  const avatarInput = useRef();
 
   useEffect(() => {
-    avatarInput.current.value = ''
-  }, [isOpen])
+    avatarInput.current.value = '';
+  }, [isOpen]);
 
   function handleSubmit(e) {
-    e.preventDefault()
+    e.preventDefault();
 
     onUpdateAvatar({
       avatar: avatarInput.current.value
-    })
+    });
   }
 
   return (
@@ -31,7 +31,7 @@ function EditAvatarPopup( {isOpen, onClose, onUpdateAvatar} ) {
           <span className="input-error input-error_avatar_link" />
         </fieldset>
       </PopupWithForm>
-  )
+  );
 }
 
-export default EditAvatarPopup
+export default EditAvatarPopup;

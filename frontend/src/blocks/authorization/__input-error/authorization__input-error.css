@@ -1,0 +1,9 @@
+.authorization__input-error {
+  color: white;
+  margin: 0;
+  display: none;
+}
+
+.authorization__input-error_shown {
+  display: inline;
+}

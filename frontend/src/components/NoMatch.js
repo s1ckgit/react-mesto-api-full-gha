@@ -1,5 +1,5 @@
-import {NavLink} from 'react-router-dom'
-import nomatchPic from '../images/nomatch.jpg'
+import { NavLink } from 'react-router-dom';
+import nomatchPic from '../images/nomatch.jpg';
 
 export default function NoMatch() {
   return (
@@ -8,5 +8,5 @@ export default function NoMatch() {
       <img className='nomatch__pic' src={nomatchPic} alt='Страница не найдена'/>
       <NavLink className='nomatch__link' to='/'>Вернуться на главную</NavLink>
     </>
-  )
+  );
 }

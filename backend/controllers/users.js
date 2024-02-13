@@ -5,9 +5,9 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 
 const User = require('../models/user');
 
-const {
-  SUCCES_CREATED_CODE,
-} = require('../data/responseStatuses');
+// const {
+//   SUCCES_CREATED_CODE,
+// } = require('../data/responseStatuses');
 
 module.exports.createUser = (req, res, next) => {
   const {
@@ -23,12 +23,16 @@ module.exports.createUser = (req, res, next) => {
         email,
         password: hash,
       })
-        .then(() => res.status(SUCCES_CREATED_CODE).send({
-          name,
-          about,
-          avatar,
-          email,
-        }))
+        .then((user) => {
+          const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'secret-key', { expiresIn: '7d' });
+
+          res.cookie('jwt', token, {
+            maxAge: 3600000 * 24 * 7,
+            httpOnly: true,
+          })
+            .status(200)
+            .send({ message: 'Авторизация успешна!' });
+        })
         .catch(next);
     })
     .catch(next);

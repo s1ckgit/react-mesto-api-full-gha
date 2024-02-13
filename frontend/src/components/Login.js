@@ -8,8 +8,8 @@ export default function Login() {
     <>
       <Header login/>
       <div className="authorization">
-        <AuthorizationElement title='Вход' btnText='Войти'/>
+        <AuthorizationElement title='Вход' btnText='Войти' login/>
       </div>
     </>
-  )
+  );
 }

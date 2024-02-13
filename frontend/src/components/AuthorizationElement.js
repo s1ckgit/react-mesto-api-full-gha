@@ -1,69 +1,167 @@
-import { useState } from 'react'
-import { NavLink } from 'react-router-dom'
-import api from '../utils/api'
-import InfoTooltip from './InfoToolTip'
-import { useNavigate } from 'react-router-dom'
-import { useContext } from 'react'
-import { AuthContext } from '../contexts/AuthContext'
+import { useForm } from "react-hook-form";
+import cn from 'classnames';
+import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import api from '../utils/api';
+import InfoTooltip from './InfoToolTip';
+import { useNavigate } from 'react-router-dom';
 
-export default function AuthorizationElement({title, btnText, register = false}) {
-  const navigate = useNavigate()
-  const setAuth = useContext(AuthContext)
-  const [tooltipOpened, setTooltipOpened] = useState(false)
-  const [tooltipType, setTooltipType] = useState('')
-  const [authData, setAuthData] = useState({
-    email: '',
-    password: ''
-  })
+export default function AuthorizationElement({ title, btnText, login = false, authorization }) {
+  const navigate = useNavigate();
+  const [tooltipOpened, setTooltipOpened] = useState(false);
 
-  function handleSumbit(e) {
-    e.preventDefault()
-    if(register) {
-      api.registerUser(authData)
-      .then((data) => {
-        setTooltipOpened(true)
-        setTooltipType('succes');
-        setAuthData({
-          email: '',
-          password: ''
-        })
-      })
-      .catch(() => {
-        setTooltipOpened(true)
-        setTooltipType('fail')
-      })
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    defaultValues: {
+      email: '',
+      password: '',
+      name: '',
+      about: '',
+      avatar: '',
+    },
+    mode: 'onBlur'
+  });
+
+  const onSubmit = (data) => {
+    if(login) {
+      handleLogin(data);
     } else {
-      api.loginUser(authData)
-        .then((data) => {
-          localStorage.setItem('jwt', data.token)
-          console.log(data)
-          setAuth(true);
-          navigate('/')
+      handleRegister(data);
+    }
+  };
+
+  function handleLogin(data) {
+    const dataCopy = {
+      ...data
+    };
+    checkEmptyStrings(dataCopy);
+    api.loginUser(dataCopy)
+        .then(() => {
+          localStorage.setItem('authorized', true);
+          authorization(true);
+          navigate('/');
         })
         .catch(() => {
-          setTooltipOpened(true)
-          setTooltipType('fail')
-        })
+          setTooltipOpened(true);
+        });
+  }
+
+  function handleRegister(data) {
+    const dataCopy = {
+      ...data
+    };
+    checkEmptyStrings(dataCopy);
+    api.registerUser(dataCopy)
+      .then(() => {
+        localStorage.setItem('authorized', true);
+        authorization(true);
+        navigate('/');
+      })
+      .catch(() => {
+        setTooltipOpened(true);
+      });
+  }
+
+  function checkEmptyStrings(object) {
+    for (let key in object) {
+      if(object[key] === '') {
+        delete object[key];
+      }
     }
   }
-  function handleChange(e) {
-    setAuthData({
-      ...authData,
-      [e.target.name]: e.target.value
-    })
-  }
+
   return (
     <div className="authorization__container">
       <h1 className="authorization__title">{title}</h1>
 
-      <form onSubmit={handleSumbit} className="authorization__form">
-        <input onChange={handleChange} type='email' name='email' value={authData.email} className='authorization__input' placeholder='Email'/>
-        <input onChange={handleChange} type='password' name='password' value={authData.password} className='authorization__input' placeholder='Пароль'/>
+      <form onSubmit={handleSubmit(onSubmit)} className="authorization__form">
+        <input {...register('email', {
+          required: 'Поле необходимо заполнить',
+          pattern: {
+            value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+            message: 'Укажите корректный Email'
+          }
+        })}
+        className='authorization__input'
+        placeholder="Email" />
+        <p className={cn('authorization__input-error', {
+          'authorization__input-error_shown': errors.email
+        })}>
+          {errors.email?.message}
+        </p>
+
+        <input {...register('password', {
+          required: 'Поле необходимо заполнить',
+          minLength: {
+            value: 8,
+            message: 'Минимальная длина пароля 8 символов'
+          }
+        })}
+        className='authorization__input'
+        placeholder="Пароль"
+        type="password"/>
+        <p className={cn('authorization__input-error', {
+          'authorization__input-error_shown': errors.password
+        })}>
+          {errors.password?.message}
+        </p>
+
+        {!login && (
+          <>
+            <input {...register('name', {
+              minLength: {
+                value: 2,
+                message: 'Минимальная длина 2'
+              },
+              maxLength: {
+                value: 30,
+                message: 'Максимальная длина 30 символов'
+              }
+            })}
+            className='authorization__input'
+            placeholder='Имя'/>
+            <p className={cn('authorization__input-error', {
+          'authorization__input-error_shown': errors.name
+        })}>
+          {errors.name?.message}
+        </p>
+            <input {...register('about', {
+              minLength: {
+                value: 2,
+                message: 'Минимальная длина 2'
+              },
+              maxLength: {
+                value: 30,
+                message: 'Максимальная длина 30 символов'
+              }
+            })}
+            className='authorization__input'
+            placeholder='Обо мне'/>
+            <p className={cn('authorization__input-error', {
+          'authorization__input-error_shown': errors.about
+        })}>
+          {errors.about?.message}
+        </p>
+            <input {...register('avatar', {
+              pattern: {
+                value: /https?:\/\/(www\.)?[\w-]+\.\w+(\/.+)?/i,
+                message: 'Укажите корректную ссылку'
+              }
+            })}
+            className='authorization__input'
+            placeholder='Ссылка на аватар'/>
+            <p className={cn('authorization__input-error', {
+          'authorization__input-error_shown': errors.avatar
+        })}>
+          {errors.avatar?.message}
+        </p>
+          </>
+        )}
+
         <button type='submit' className='authorization__button'>{btnText}</button>
         {register && <NavLink className='authorization__link' to='/signin'>Уже зарегистрированы? Войти</NavLink>}
       </form>
 
-      <InfoTooltip setIsOpened={setTooltipOpened} type={tooltipType} isOpened={tooltipOpened}/>
+      <InfoTooltip setIsOpened={setTooltipOpened} isOpened={tooltipOpened}/>
     </div>
-  )
+  );
 }

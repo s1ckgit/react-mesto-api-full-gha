@@ -1,17 +1,17 @@
 class Api {
     constructor(options) {
-      this._baseUrl = options.baseUrl
-      this._headers = options.headers
-      this.deleteCard = this.deleteCard.bind(this)
-      this.likeCard = this.likeCard.bind(this)
+      this._baseUrl = options.baseUrl;
+      this._headers = options.headers;
+      this.deleteCard = this.deleteCard.bind(this);
+      this.likeCard = this.likeCard.bind(this);
     }
 
     _checkResponse(res) {
       if(res.ok) {
-        return res.json()
+        return res.json();
       }
 
-      return Promise.reject(`Ошибка: ${res.status}`)
+      return Promise.reject(`Ошибка: ${res.status}`);
     }
 
     getInitialCards() {
@@ -20,8 +20,8 @@ class Api {
         credentials: 'include',
       })
         .then(res => {
-          return this._checkResponse(res)
-        })
+          return this._checkResponse(res);
+        });
     }
 
     getUserInfo() {
@@ -30,11 +30,11 @@ class Api {
         credentials: 'include',
       })
         .then(res => {
-          return this._checkResponse(res)
-        })
+          return this._checkResponse(res);
+        });
     }
 
-    changeUserInfo({name, about}) {
+    changeUserInfo({ name, about }) {
       return fetch(`${this._baseUrl}/users/me`, {
         method: 'PATCH',
         credentials: 'include',
@@ -46,11 +46,11 @@ class Api {
         })
       })
         .then(res => {
-          return this._checkResponse(res)
-        })
+          return this._checkResponse(res);
+        });
     }
 
-    addCard({name, link}) {
+    addCard({ name, link }) {
       return fetch(`${this._baseUrl}/cards`, {
         method: 'POST',
         credentials: 'include',
@@ -62,8 +62,8 @@ class Api {
         })
       })
         .then(res => {
-          return this._checkResponse(res)
-        })
+          return this._checkResponse(res);
+        });
     }
 
     deleteCard(id) {
@@ -74,8 +74,8 @@ class Api {
 
       })
         .then(res => {
-          return this._checkResponse(res)
-        })
+          return this._checkResponse(res);
+        });
     }
 
     likeCard(id, like = true) {
@@ -85,20 +85,20 @@ class Api {
         headers: this._headers,
       })
         .then(res => {
-          return this._checkResponse(res)
-        })
+          return this._checkResponse(res);
+        });
     }
 
-    changeAvatar({avatar}) {
+    changeAvatar({ avatar }) {
       return fetch(`${this._baseUrl}/users/me/avatar`, {
         method: 'PATCH',
         credentials: 'include',
         headers: this._headers,
-        body: JSON.stringify({avatar: avatar})
+        body: JSON.stringify({ avatar: avatar })
       })
         .then(res => {
-          return this._checkResponse(res)
-        })
+          return this._checkResponse(res);
+        });
     }
 
     registerUser(data) {
@@ -111,8 +111,8 @@ class Api {
       })
 
         .then(res => {
-          return this._checkResponse(res)
-        })
+          return this._checkResponse(res);
+        });
     }
 
     loginUser(data) {
@@ -124,8 +124,8 @@ class Api {
       })
 
         .then(res => {
-          return this._checkResponse(res)
-        })
+          return this._checkResponse(res);
+        });
     }
 
     logout() {
@@ -135,16 +135,16 @@ class Api {
         headers: this._headers
       })
         .then((res) => {
-          return this._checkResponse(res)
-        })
+          return this._checkResponse(res);
+        });
     }
   }
 
 const api = new Api({
-    baseUrl: 'https://api.mesto-frontend.siick.nomoredomainsrocks.ru',
+    baseUrl: 'http://localhost:3001',
     headers: {
       'Content-Type': 'application/json'
     }
-})
+});
 
-export default api
+export default api;

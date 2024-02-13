@@ -1,27 +1,27 @@
-import { useContext } from "react"
-import { UserContext } from "../contexts/CurrentUserContext"
+import { useContext } from "react";
+import { UserContext } from "../contexts/CurrentUserContext";
 
-function Card( {card, onCardClick, onCardLike, onCardDelete} ) {
+function Card( { card, onCardClick, onCardLike, onCardDelete } ) {
   function handleClick() {
-    onCardClick(card)
+    onCardClick(card);
   }
+
   function handleDeleteClick() {
-    onCardDelete(card)
+    onCardDelete(card);
   }
+
   function handleLikeClick() {
-    onCardLike(card)
+    onCardLike(card);
   }
 
   const user = useContext(UserContext),
         isOwn = card.owner._id.toString() === user._id,
-        isLiked = card.likes.some(i => i._id.toString() === user._id)
-  const cardLikeButtonClassName = (
-    `element__like ${isLiked && 'element__like_active'}`
-  );;
+        isLiked = card.likes.some(i => i._id.toString() === user._id),
+        cardLikeButtonClassName = `element__like ${isLiked && 'element__like_active'}`;
 
   return (
       <div className="element">
-          { isOwn && <button onClick={handleDeleteClick} type="button" className="element__delete"></button>}
+          {isOwn && <button onClick={handleDeleteClick} type="button" className="element__delete"></button>}
           <img src={card.link} alt={card.name} className="element__img" onClick={handleClick}/>
           <div className="element__block">
               <h3 className="element__name">{card.name}</h3>
@@ -31,7 +31,7 @@ function Card( {card, onCardClick, onCardLike, onCardDelete} ) {
               </div>
           </div>
       </div>
-  )
+  );
 }
 
-export default Card
+export default Card;

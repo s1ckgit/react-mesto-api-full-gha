@@ -1,32 +1,32 @@
-import { useContext, useEffect, useState } from 'react'
-import { UserContext } from '../contexts/CurrentUserContext'
-import PopupWithForm from './PopupWithForm'
+import { useContext, useEffect, useState } from 'react';
+import { UserContext } from '../contexts/CurrentUserContext';
+import PopupWithForm from './PopupWithForm';
 
 function EditProfilePopup( { isOpen, onClose, onUpdateUser } ) {
   const [name, setName] = useState(''),
-        [description, setDescription] = useState('')
+        [description, setDescription] = useState('');
 
-  const user = useContext(UserContext)
+  const user = useContext(UserContext);
 
   useEffect(() => {
-    setName(user?.name)
-    setDescription(user?.about)
-  }, [user, isOpen])
+    setName(user?.name);
+    setDescription(user?.about);
+  }, [user, isOpen]);
 
   function changeName(e) {
-    setName(e.target.value)
+    setName(e.target.value);
   }
 
   function changeDescription(e) {
-    setDescription(e.target.value)
+    setDescription(e.target.value);
   }
 
   function handleSumbit(e) {
-    e.preventDefault()
+    e.preventDefault();
     onUpdateUser({
       name,
       about: description
-    })
+    });
   }
 
   return (
@@ -62,7 +62,7 @@ function EditProfilePopup( { isOpen, onClose, onUpdateUser } ) {
           <span className="input-error input-error_about" />
         </fieldset>
       </PopupWithForm>
-  )
+  );
 }
 
-export default EditProfilePopup
+export default EditProfilePopup;

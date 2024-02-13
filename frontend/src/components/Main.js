@@ -1,9 +1,9 @@
-import React, { useContext } from "react"
-import Card from "./Card"
-import { UserContext } from "../contexts/CurrentUserContext"
+import React, { useContext } from "react";
+import Card from "./Card";
+import { UserContext } from "../contexts/CurrentUserContext";
 
 function Main({ onEditAvatar, onEditProifle, onAddPlace, onCardClick, cards, onCardLike, onCardDelete }) {
-    const user = useContext(UserContext)
+    const user = useContext(UserContext);
 
     return (
         <main>
@@ -26,11 +26,11 @@ function Main({ onEditAvatar, onEditProifle, onAddPlace, onCardClick, cards, onC
             {cards.map(cardData => {
               return (
                 <Card onCardDelete={onCardDelete} onCardLike={onCardLike} onCardClick={onCardClick} key={cardData._id} card={cardData}/>
-              )
+              );
             })}
           </section>
         </main>
-    )
+    );
 }
 
-export default Main
+export default Main;

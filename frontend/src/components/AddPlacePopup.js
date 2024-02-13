@@ -1,21 +1,21 @@
-import { useEffect, useRef } from 'react'
-import PopupWithForm from './PopupWithForm'
+import { useEffect, useRef } from 'react';
+import PopupWithForm from './PopupWithForm';
 
-function AddPlacePopup( {isOpen, onClose, onAddPlace} ) {
-  const linkInput = useRef()
-  const nameInput = useRef()
+function AddPlacePopup( { isOpen, onClose, onAddPlace } ) {
+  const linkInput = useRef();
+  const nameInput = useRef();
 
   useEffect(() => {
-    linkInput.current.value = ''
-    nameInput.current.value = ''
-  }, [isOpen])
+    linkInput.current.value = '';
+    nameInput.current.value = '';
+  }, [isOpen]);
 
   function handleSubmit(e) {
-    e.preventDefault()
+    e.preventDefault();
     onAddPlace({
       name: nameInput.current.value,
       link: linkInput.current.value
-    })
+    });
   }
 
   return (
@@ -47,7 +47,7 @@ function AddPlacePopup( {isOpen, onClose, onAddPlace} ) {
           <span className="input-error input-error_link" />
         </fieldset>
       </PopupWithForm>
-  )
+  );
 }
 
-export default AddPlacePopup
+export default AddPlacePopup;

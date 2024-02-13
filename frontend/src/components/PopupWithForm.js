@@ -1,6 +1,6 @@
-import cn from 'classnames'
+import cn from 'classnames';
 
-function PopupWithForm( {title, name, buttonText, children, isOpen, onClose, onSubmit} ) {
+function PopupWithForm( { title, name, buttonText, children, isOpen, onClose, onSubmit } ) {
     return (
         <div className={cn(`popup popup_${name}`, {
             'popup_opened': isOpen === true
@@ -24,7 +24,7 @@ function PopupWithForm( {title, name, buttonText, children, isOpen, onClose, onS
             </form>
           </div>
         </div>
-    )
+    );
 }
 
-export default PopupWithForm
+export default PopupWithForm;

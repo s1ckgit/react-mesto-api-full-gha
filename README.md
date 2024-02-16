@@ -1,4 +1,4 @@
-![Превью](https://github.com/s1ckgit/react-mesto-api-full-gha/blob/main/preview_mesto.gif)
+![Превью](https://github.com/s1ckgit/react-mesto-api-full-gha/blob/main/preview.gif)
 
 # Место
 Репозиторий для приложения проекта `Mesto`, включающий фронтенд и бэкенд части приложения со следующими возможностями: авторизации и регистрации пользователей, операции с карточками и пользователями. Валидация форм реализована с помощью библиотеки 'react-hook-form'

@@ -7,6 +7,10 @@
   margin-bottom: 30px;
 }
 
+.popup__fieldset_error {
+  margin-bottom: 14px;
+}
+
 .popup__fieldset:nth-child(2) {
   margin-bottom: 48px;
 }

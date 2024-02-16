@@ -1,65 +1,80 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
+import cn from 'classnames';
+import { useForm } from 'react-hook-form';
 import { UserContext } from '../contexts/CurrentUserContext';
 import PopupWithForm from './PopupWithForm';
 
 function EditProfilePopup( { isOpen, onClose, onUpdateUser } ) {
-  const [name, setName] = useState(''),
-        [description, setDescription] = useState('');
-
   const user = useContext(UserContext);
+  console.log(user);
+
+  const { register, handleSubmit, formState: { errors, isValid }, setValue, trigger } = useForm({
+    defaultValues: {
+      name: '',
+      about: '',
+    },
+    mode: 'onChange'
+  });
+
+  const onSubmit = (data) => {
+    onUpdateUser(data);
+  };
 
   useEffect(() => {
-    setName(user?.name);
-    setDescription(user?.about);
-  }, [user, isOpen]);
-
-  function changeName(e) {
-    setName(e.target.value);
-  }
-
-  function changeDescription(e) {
-    setDescription(e.target.value);
-  }
-
-  function handleSumbit(e) {
-    e.preventDefault();
-    onUpdateUser({
-      name,
-      about: description
-    });
-  }
+    setValue('about', user.about);
+    setValue('name', user.name);
+    trigger();
+  }, [user, setValue, trigger]);
 
   return (
-      <PopupWithForm name='profile' title='Редактировать профиль' buttonText='Сохранить' onSubmit={handleSumbit} onClose={onClose} isOpen={isOpen}>
-        <fieldset className="popup__fieldset">
+      <PopupWithForm isValid={isValid} name='profile' title='Редактировать профиль' buttonText='Сохранить' onSubmit={handleSubmit(onSubmit)} onClose={onClose} isOpen={isOpen}>
+        <fieldset className={cn('popup__fieldset', {
+          'popup__fieldset_error': errors.name
+        })}>
           <input
-            minLength={2}
-            maxLength={40}
-            required=""
-            name="name"
-            id="name"
-            type="text"
+            {...register('name', {
+              required: 'Поле необходимо заполнить',
+              minLength: {
+                value: 2,
+                message: 'Минимум 2 символа'
+              },
+              maxLength: {
+                value: 30,
+                message: 'Максимум 30 символов'
+              }
+            })}
             placeholder="Имя"
             className="popup__input popup__input_profile"
-            onChange={changeName}
-            value={name || ''}
           />
-          <span className="input-error input-error_name" />
+          <p className={cn('input-error', {
+            'input-error_active': errors.name
+          })}>
+            {errors.name?.message}
+          </p>
         </fieldset>
-        <fieldset className="popup__fieldset">
+        <fieldset className={cn('popup__fieldset', {
+          'popup__fieldset_error': errors.about
+        })}>
           <input
-            minLength={2}
-            maxLength={200}
-            required=""
-            name="about"
-            id="about"
-            type="text"
+            {...register('about', {
+              required: 'Поле необходимо заполнить',
+              minLength: {
+                value: 2,
+                message: 'Минимум 2 символа'
+              },
+              maxLength: {
+                value: 30,
+                message: 'Максимум 30 символов'
+              }
+            })}
             placeholder="О себе"
             className="popup__input popup__input_profile"
-            onChange={changeDescription}
-            value={description || ''}
           />
-          <span className="input-error input-error_about" />
+          <p className={cn('input-error', {
+            'input-error_active': errors.about
+          })}>
+            {errors.about?.message}
+          </p>
         </fieldset>
       </PopupWithForm>
   );

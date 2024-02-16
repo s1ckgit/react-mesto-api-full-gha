@@ -1,50 +1,71 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
+import { useForm } from "react-hook-form";
+import cn from 'classnames';
 import PopupWithForm from './PopupWithForm';
 
 function AddPlacePopup( { isOpen, onClose, onAddPlace } ) {
-  const linkInput = useRef();
-  const nameInput = useRef();
+  const { register, handleSubmit, formState: { errors, isValid }, reset } = useForm({
+    defaultValues: {
+      name: '',
+      link: ''
+    },
+    mode: 'onChange'
+  });
+
+  const onSubmit = (data) => {
+    onAddPlace(data);
+  };
 
   useEffect(() => {
-    linkInput.current.value = '';
-    nameInput.current.value = '';
-  }, [isOpen]);
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    onAddPlace({
-      name: nameInput.current.value,
-      link: linkInput.current.value
-    });
-  }
+    reset();
+  }, [isOpen, reset]);
 
   return (
-      <PopupWithForm name='card' title='Новое место' buttonText='Сохранить' isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit}>
-        <fieldset className="popup__fieldset">
+      <PopupWithForm isValid={isValid} name='card' title='Новое место' buttonText='Сохранить' isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit(onSubmit)}>
+        <fieldset className={cn('popup__fieldset', {
+          'popup__fieldset_error': errors.name
+        })}>
           <input
-            required=""
-            minLength={2}
-            maxLength={30}
-            name="name"
-            id="title"
+            {...register('name', {
+              required: 'Поле необходимо заполнить',
+              minLength: {
+                value: 2,
+                message: 'Минимум 2 символа'
+              },
+              maxLength: {
+                value: 30,
+                message: 'Максимум 30 символов'
+              }
+            })}
             type="text"
             placeholder="Название"
             className="popup__input popup__input_card"
-            ref={nameInput}
           />
-          <span className="input-error input-error_title" />
+          <p className={cn("input-error", {
+            "input-error_active": errors.name
+          })}>
+            {errors.name?.message}
+          </p>
         </fieldset>
-        <fieldset className="popup__fieldset">
+        <fieldset className={cn('popup__fieldset', {
+          'popup__fieldset_error': errors.link
+        })}>
           <input
-            required=""
-            name="link"
-            id="link"
-            type="url"
+            {...register('link', {
+              required: 'Поле необходимо заполнить',
+              pattern: {
+                value: /https?:\/\/(www\.)?[\w-]+\.\w+(\/.+)?/i,
+                message: 'Укажите корректную ссылку'
+              }
+            })}
             placeholder="Ссылка на картинку"
             className="popup__input popup__input_card"
-            ref={linkInput}
           />
-          <span className="input-error input-error_link" />
+          <p className={cn("input-error", {
+            "input-error_active": errors.link
+          })}>
+            {errors.link?.message}
+          </p>
         </fieldset>
       </PopupWithForm>
   );

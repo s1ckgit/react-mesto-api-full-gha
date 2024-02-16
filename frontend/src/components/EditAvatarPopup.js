@@ -1,34 +1,46 @@
-import { useEffect, useRef } from 'react';
+import { useForm } from 'react-hook-form';
+import cn from 'classnames';
 import PopupWithForm from './PopupWithForm';
+import { useEffect } from 'react';
 
 function EditAvatarPopup( { isOpen, onClose, onUpdateAvatar } ) {
-  const avatarInput = useRef();
+
+  const { register, handleSubmit, formState: { errors, isValid }, reset } = useForm({
+    defaultValues: {
+      avatar: ''
+    },
+    mode: 'onChange'
+  });
+
+  const onSubmit = (data) => {
+    onUpdateAvatar(data);
+  };
 
   useEffect(() => {
-    avatarInput.current.value = '';
-  }, [isOpen]);
-
-  function handleSubmit(e) {
-    e.preventDefault();
-
-    onUpdateAvatar({
-      avatar: avatarInput.current.value
-    });
-  }
+    reset();
+  }, [isOpen, reset]);
 
   return (
-      <PopupWithForm name='avatar' title='Обновить аватар' buttonText='Сохранить' isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit}>
-        <fieldset className="popup__fieldset">
+      <PopupWithForm isValid={isValid} name='avatar' title='Обновить аватар' buttonText='Сохранить' isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit(onSubmit)}>
+        <fieldset className={cn('popup__fieldset', {
+          'popup__fieldset_error': errors.avatar
+        })}>
           <input
-            required=""
-            name="avatar"
-            id="avatar_link"
-            type="url"
+            {...register('avatar', {
+              required: 'Поле необходимо заполнить',
+              pattern: {
+                value: /https?:\/\/(www\.)?[\w-]+\.\w+(\/.+)?/i,
+                message: 'Укажите корректную ссылку'
+              }
+            })}
             placeholder="Ссылка на аватар"
             className="popup__input popup__input_avatar"
-            ref={avatarInput}
           />
-          <span className="input-error input-error_avatar_link" />
+          <p className={cn('input-error', {
+            'input-error_active': errors.avatar
+          })}>
+            {errors.avatar?.message}
+          </p>
         </fieldset>
       </PopupWithForm>
   );
